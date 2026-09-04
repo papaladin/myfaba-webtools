@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faba Encoder</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:       #0b0f1e;
+      --navy-2:     #131829;
+      --navy-3:     #1c2240;
+      --slate:      #8892b0;
+      --light:      #ccd6f6;
+      --white:      #e6edf3;
+      --orange:     #ff9f43;
+      --orange-dim: rgba(255,159,67,0.10);
+      --orange-mid: rgba(255,159,67,0.25);
+      --rule:       rgba(255,255,255,0.07);
+      --green:      #43d17a;
+      --red:        #ff6b6b;
+    }
+
+    body {
+      background: var(--navy);
+      color: var(--light);
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 3rem 1.5rem 5rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    main { width: 100%; max-width: 640px; }
+
+    /* ── Header ── */
+    header { margin-bottom: 2.5rem; }
+    h1 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.1rem;
+      color: var(--orange);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.3rem;
+    }
+    header p { font-size: 0.85rem; color: var(--slate); }
+    header a { color: var(--slate); }
+    header a:hover { color: var(--white); }
+
+    /* ── Section titles ── */
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--slate);
+      margin-bottom: 0.75rem;
+    }
+
+    hr { border: none; border-top: 1px solid var(--rule); margin: 2rem 0; }
+
+    /* ── Step 1: Figure ID ── */
+    .id-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .id-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    label[for="figureId"] {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--white);
+    }
+    input#figureId {
+      background: var(--navy-3);
+      border: 1px solid var(--rule);
+      color: var(--orange);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1rem;
+      width: 5rem;
+      padding: 0.4rem 0.6rem;
+      border-radius: 3px;
+      text-align: center;
+      outline: none;
+    }
+    input#figureId:focus { border-color: var(--orange); }
+    input#figureId.invalid { border-color: var(--red); }
+
+    button.secondary {
+      background: none;
+      border: 1px solid var(--rule);
+      color: var(--slate);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    button.secondary:hover { border-color: var(--slate); color: var(--white); }
+
+    .id-note { font-size: 0.78rem; color: var(--slate); }
+    .id-note.warn { color: var(--red); }
+
+    /* ── Step 2: Drop zone ── */
+    #dropzone {
+      border: 1px dashed var(--rule);
+      border-radius: 4px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      margin-bottom: 1rem;
+    }
+    #dropzone:hover, #dropzone.dragover {
+      border-color: var(--orange);
+      background: var(--orange-dim);
+    }
+    #dropzone p { color: var(--slate); font-size: 0.88rem; }
+    #dropzone strong { color: var(--white); }
+    #file-input { display: none; }
+
+    /* ── File list ── */
+    #file-list { list-style: none; margin-bottom: 1.5rem; }
+    #file-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.85rem;
+    }
+    #file-list li:first-child { border-top: 1px solid var(--rule); }
+
+    .track-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--orange);
+      background: var(--orange-dim);
+      border: 1px solid var(--orange-mid);
+      padding: 0.1rem 0.4rem;
+      border-radius: 2px;
+      min-width: 2.2rem;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .track-name { color: var(--white); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .track-size { color: var(--slate); font-size: 0.75rem; flex-shrink: 0; }
+    .btn-remove {
+      background: none;
+      border: none;
+      color: var(--slate);
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      padding: 0 0.25rem;
+      flex-shrink: 0;
+    }
+    .btn-remove:hover { color: var(--red); }
+
+    /* ── Move buttons ── */
+    .move-btns { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; }
+    .btn-move {
+      background: none;
+      border: none;
+      color: var(--slate);
+      cursor: pointer;
+      font-size: 0.6rem;
+      line-height: 1;
+      padding: 0;
+    }
+    .btn-move:hover { color: var(--white); }
+    .btn-move:disabled { opacity: 0.2; cursor: default; }
+
+    /* ── Generate button ── */
+    #btn-generate {
+      background: var(--orange);
+      color: var(--navy);
+      border: none;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.75rem 2rem;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      letter-spacing: 0.03em;
+    }
+    #btn-generate:hover { opacity: 0.88; }
+    #btn-generate:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    /* ── Status / log ── */
+    #status {
+      margin-top: 1.5rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--slate);
+      display: none;
+    }
+    #status.visible { display: block; }
+    #status .ok   { color: var(--green); }
+    #status .err  { color: var(--red); }
+    #status .info { color: var(--slate); }
+
+    /* ── Step 3: Instructions ── */
+    #instructions { display: none; }
+    #instructions.visible { display: block; }
+
+    .steps { list-style: none; counter-reset: steps; }
+    .steps li {
+      counter-increment: steps;
+      display: flex;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.88rem;
+    }
+    .steps li::before {
+      content: counter(steps);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--orange);
+      background: var(--orange-dim);
+      border: 1px solid var(--orange-mid);
+      border-radius: 50%;
+      width: 1.5rem;
+      height: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .steps li p { color: var(--slate); }
+    .steps li strong { color: var(--white); display: block; margin-bottom: 0.2rem; }
+    .steps code {
+      font-family: 'IBM Plex Mono', monospace;
+      background: var(--navy-3);
+      border: 1px solid var(--rule);
+      padding: 0.15rem 0.4rem;
+      border-radius: 2px;
+      font-size: 0.8rem;
+      color: var(--orange);
+      word-break: break-all;
+    }
+
+    /* ── Disclaimer ── */
+    .disclaimer {
+      margin-top: 3rem;
+      padding: 0.75rem 1rem;
+      border-left: 2px solid var(--rule);
+      font-size: 0.78rem;
+      color: var(--slate);
+    }
+
+    /* ── CDN fallback notice ── */
+    #cdn-error {
+      display: none;
+      margin-bottom: 1rem;
+      padding: 0.75rem 1rem;
+      border-left: 2px solid var(--red);
+      font-size: 0.8rem;
+      color: var(--red);
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 2rem 1rem 4rem; }
+    }
+  </style>
+
+  <!-- IBM Plex fonts — Google Fonts, no CORS issues with GH Pages -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400&display=swap" rel="stylesheet">
+
+  <!-- fflate via jsDelivr — pinned version, UMD build -->
+  <script src="https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js"
+          onerror="document.getElementById('cdn-error').style.display='block'"></script>
+</head>
+<body>
+<main>
+
+  <header>
+    <h1>// faba-encoder</h1>
+    <p>
+      Convert your MP3s to Faba Box format. No install, no upload, everything runs in your browser.<br>
+      Based on <a href="https://github.com/wansors/myfaba-hacks" target="_blank" rel="noopener">myfaba-hacks</a>.
+      Original Faba (offline) only — not for Faba+.
+    </p>
+  </header>
+
+  <div id="cdn-error">
+    ⚠ Could not load the zip library from CDN. Try refreshing, or check your connection.
+    If this keeps happening, a self-hosted version of this tool is available.
+  </div>
+
+  <!-- ── Step 1: Figure ID ── -->
+  <section aria-labelledby="lbl-step1">
+    <p class="section-label" id="lbl-step1">01 — figure id</p>
+    <div class="id-row">
+      <div class="id-input-wrap">
+        <label for="figureId">ID</label>
+        <input type="text" id="figureId" maxlength="4" placeholder="2742" autocomplete="off">
+      </div>
+      <button class="secondary" id="btn-random">random safe id</button>
+    </div>
+    <p class="id-note" id="id-note">
+      Use IDs between 2000–8999 to avoid conflicts with official Faba content.
+    </p>
+  </section>
+
+  <hr>
+
+  <!-- ── Step 2: Files ── -->
+  <section aria-labelledby="lbl-step2">
+    <p class="section-label" id="lbl-step2">02 — add your mp3 files</p>
+
+    <div id="dropzone" role="button" tabindex="0" aria-label="Drop MP3 files here or click to browse">
+      <p><strong>Drop MP3 files here</strong></p>
+      <p>or click to browse — multiple files supported</p>
+    </div>
+    <input type="file" id="file-input" accept=".mp3,audio/mpeg" multiple>
+
+    <ul id="file-list"></ul>
+
+    <button id="btn-generate" disabled>Generate Faba package →</button>
+
+    <div id="status" role="log" aria-live="polite"></div>
+  </section>
+
+  <hr>
+
+  <!-- ── Step 3: Post-download instructions ── -->
+  <section id="instructions" aria-labelledby="lbl-step3">
+    <p class="section-label" id="lbl-step3">03 — install on your faba box</p>
+    <ol class="steps">
+      <li>
+        <div>
+          <strong>Unzip the downloaded file</strong>
+          <p>You'll find a folder named <code id="instr-folder">K????</code> inside.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Connect your Faba box to your computer</strong>
+          <p>Plug it in via USB while powered on. It should appear as a USB drive.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Copy the folder to the Faba box</strong>
+          <p>Drag <code id="instr-folder2">K????</code> into the root of the Faba drive. Don't rename it.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Eject and unplug</strong>
+          <p>Safely eject the drive before unplugging.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Write your NFC tag</strong>
+          <p>
+            Open <strong>NFC Tools</strong> on your phone (iOS or Android).
+            Tap <em>Write → Add a record → Text</em> and enter exactly:<br><br>
+            <code id="instr-nfc">02190530????00</code><br><br>
+            Tap Write, then hold your NTAG213 tag to the back of your phone.
+          </p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Place tag on the Faba box</strong>
+          <p>Power on your Faba box and place the NFC tag on top. It should play your content.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <div class="disclaimer">
+    This tool only processes files you provide. No audio is uploaded anywhere — everything runs locally in your browser.
+    Only use content you own or have rights to. This tool is not affiliated with MyFaba.
+  </div>
+
+</main>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// CIPHER — direct port of MKICipher.java
+// Applies the Faba byte-shuffling to an entire file.
+// ─────────────────────────────────────────────────────────────────────────────
+const BYTE_HIGH_NIBBLE = [
+  [0x30,0x30,0x20,0x20,0x10,0x10,0x00,0x00,0x70,0x70,0x60,0x60,0x50,0x50,0x40,0x40,0xB0,0xB0,0xA0,0xA0,0x90,0x90,0x80,0x80,0xF0,0xF0,0xE0,0xE0,0xD0,0xD0,0xC0,0xC0],
+  [0x00,0x00,0x10,0x10,0x20,0x20,0x30,0x30,0x40,0x40,0x50,0x50,0x60,0x60,0x70,0x70,0x80,0x80,0x90,0x90,0xA0,0xA0,0xB0,0xB0,0xC0,0xC0,0xD0,0xD0,0xE0,0xE0,0xF0,0xF0],
+  [0x10,0x10,0x00,0x00,0x30,0x30,0x20,0x20,0x50,0x50,0x40,0x40,0x70,0x70,0x60,0x60,0x90,0x90,0x80,0x80,0xB0,0xB0,0xA0,0xA0,0xD0,0xD0,0xC0,0xC0,0xF0,0xF0,0xE0,0xE0],
+  [0x20,0x20,0x30,0x30,0x00,0x00,0x10,0x10,0x60,0x60,0x70,0x70,0x40,0x40,0x50,0x50,0xA0,0xA0,0xB0,0xB0,0x80,0x80,0x90,0x90,0xE0,0xE0,0xF0,0xF0,0xC0,0xC0,0xD0,0xD0]
+];
+const BYTE_LOW_NIBBLE_EVEN = [
+  [0x0,0x1,0x2,0x3,0x4,0x5,0x6,0x7],
+  [0x5,0x4,0x7,0x6,0x1,0x0,0x3,0x2],
+  [0x9,0x8,0xb,0xa,0xd,0xc,0xf,0xe],
+  [0x0,0x1,0x2,0x3,0x4,0x5,0x6,0x7]
+];
+const BYTE_LOW_NIBBLE_ODD = [
+  [0x8,0x9,0xA,0xB,0xC,0xD,0xE,0xF],
+  [0xD,0xC,0xF,0xE,0x9,0x8,0xB,0xA],
+  [0x1,0x0,0x3,0x2,0x5,0x4,0x7,0x6],
+  [0x8,0x9,0xA,0xB,0xC,0xD,0xE,0xF]
+];
+
+function cipherBytes(input) {
+  const output = new Uint8Array(input.length);
+  for (let pos = 0; pos < input.length; pos++) {
+    const b = input[pos];
+    const bytePos = pos % 4;
+    let modified = BYTE_HIGH_NIBBLE[bytePos][b % 32];
+    if (b % 2 === 0) {
+      modified += BYTE_LOW_NIBBLE_EVEN[bytePos][Math.floor(b / 32)];
+    } else {
+      modified += BYTE_LOW_NIBBLE_ODD[bytePos][Math.floor(b / 32)];
+    }
+    output[pos] = modified;
+  }
+  return output;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ID3v2.3 writer
+// Strips any existing ID3 tag and writes a minimal fresh one, matching what
+// the shell script does: Album="Album Album", Artist="Artist Artist",
+// Track="1/1", Comment="Converted for Faba Box", Title="KXXXXCPYY"
+// ─────────────────────────────────────────────────────────────────────────────
+function encodeID3String(str) {
+  // ID3v2 text frames: encoding byte (0x00 = ISO-8859-1) + string bytes
+  const enc = new TextEncoder();
+  const strBytes = enc.encode(str);
+  const frame = new Uint8Array(1 + strBytes.length);
+  frame[0] = 0x00; // encoding: ISO-8859-1
+  frame.set(strBytes, 1);
+  return frame;
+}
+
+function makeID3Frame(frameId, content) {
+  const idBytes = new TextEncoder().encode(frameId);
+  const size = content.length;
+  // Frame: 4-byte ID + 4-byte size (big-endian) + 2-byte flags + content
+  const frame = new Uint8Array(10 + size);
+  frame.set(idBytes, 0);
+  frame[4] = (size >> 24) & 0xFF;
+  frame[5] = (size >> 16) & 0xFF;
+  frame[6] = (size >> 8)  & 0xFF;
+  frame[7] =  size        & 0xFF;
+  frame[8] = 0x00; // flags
+  frame[9] = 0x00;
+  frame.set(content, 10);
+  return frame;
+}
+
+function buildID3Tag(title, artist, album, track, comment) {
+  const frames = [
+    makeID3Frame('TIT2', encodeID3String(title)),
+    makeID3Frame('TPE1', encodeID3String(artist)),
+    makeID3Frame('TALB', encodeID3String(album)),
+    makeID3Frame('TRCK', encodeID3String(track)),
+    makeID3Frame('COMM', buildCommentFrame(comment)),
+  ];
+
+  const totalFrameSize = frames.reduce((s, f) => s + f.length, 0);
+  // ID3v2.3 header: "ID3" + version (2.3.0) + flags (0) + syncsafe size
+  const header = new Uint8Array(10);
+  header[0] = 0x49; header[1] = 0x44; header[2] = 0x33; // "ID3"
+  header[3] = 0x03; header[4] = 0x00; // version 2.3.0
+  header[5] = 0x00; // flags
+  // Syncsafe integer for size (does not include the 10-byte header itself)
+  const size = totalFrameSize;
+  header[6] = (size >> 21) & 0x7F;
+  header[7] = (size >> 14) & 0x7F;
+  header[8] = (size >> 7)  & 0x7F;
+  header[9] =  size        & 0x7F;
+
+  const tag = new Uint8Array(10 + totalFrameSize);
+  tag.set(header, 0);
+  let offset = 10;
+  for (const f of frames) { tag.set(f, offset); offset += f.length; }
+  return tag;
+}
+
+function buildCommentFrame(comment) {
+  // COMM frame: encoding(1) + language(3) + short desc(1, null) + text
+  const enc = new TextEncoder();
+  const textBytes = enc.encode(comment);
+  const frame = new Uint8Array(5 + textBytes.length);
+  frame[0] = 0x00;                    // encoding ISO-8859-1
+  frame[1] = 0x65; frame[2] = 0x6E; frame[3] = 0x67; // "eng"
+  frame[4] = 0x00;                    // empty short description (null terminator)
+  frame.set(textBytes, 5);
+  return frame;
+}
+
+function stripExistingID3(bytes) {
+  // Check for ID3v2 header
+  if (bytes[0] === 0x49 && bytes[1] === 0x44 && bytes[2] === 0x33) {
+    // Read syncsafe size
+    const size =
+      ((bytes[6] & 0x7F) << 21) |
+      ((bytes[7] & 0x7F) << 14) |
+      ((bytes[8] & 0x7F) << 7)  |
+       (bytes[9] & 0x7F);
+    return bytes.slice(10 + size);
+  }
+  return bytes;
+}
+
+function prepareTrack(mp3Bytes, figureId, trackNum) {
+  // figureId: zero-padded 4-digit string e.g. "2742"
+  // trackNum: 1-based integer
+  const trackStr = String(trackNum).padStart(2, '0');
+  const title = `K${figureId}CP${trackStr}`;
+
+  // 1. Strip existing ID3
+  const stripped = stripExistingID3(mp3Bytes);
+
+  // 2. Build new ID3 tag
+  const id3 = buildID3Tag(
+    title,
+    'Artist Artist',
+    'Album Album',
+    '1/1',
+    'Converted for Faba Box'
+  );
+
+  // 3. Concatenate: new ID3 + raw MP3 audio
+  const withTag = new Uint8Array(id3.length + stripped.length);
+  withTag.set(id3, 0);
+  withTag.set(stripped, id3.length);
+
+  // 4. Cipher the whole thing
+  return cipherBytes(withTag);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// UI state
+// ─────────────────────────────────────────────────────────────────────────────
+let files = []; // { file: File, name: string }
+
+const dropzone    = document.getElementById('dropzone');
+const fileInput   = document.getElementById('file-input');
+const fileList    = document.getElementById('file-list');
+const figureIdEl  = document.getElementById('figureId');
+const idNote      = document.getElementById('id-note');
+const btnGenerate = document.getElementById('btn-generate');
+const btnRandom   = document.getElementById('btn-random');
+const statusEl    = document.getElementById('status');
+const instrEl     = document.getElementById('instructions');
+
+function randomSafeId() {
+  return String(Math.floor(Math.random() * 7000) + 2000);
+}
+
+figureIdEl.value = randomSafeId();
+
+btnRandom.addEventListener('click', () => {
+  figureIdEl.value = randomSafeId();
+  validateId();
+});
+
+function validateId() {
+  const v = figureIdEl.value.trim();
+  const num = parseInt(v, 10);
+  const isValid = /^\d{4}$/.test(v) && num >= 2000 && num <= 8999;
+  figureIdEl.classList.toggle('invalid', !isValid);
+  if (!isValid) {
+    idNote.textContent = '⚠ Enter a 4-digit number between 2000 and 8999.';
+    idNote.classList.add('warn');
+  } else {
+    idNote.textContent = 'Use IDs between 2000–8999 to avoid conflicts with official Faba content.';
+    idNote.classList.remove('warn');
+  }
+  updateGenerateBtn();
+  return isValid;
+}
+
+figureIdEl.addEventListener('input', validateId);
+
+function addFiles(newFiles) {
+  for (const f of newFiles) {
+    if (!f.name.toLowerCase().endsWith('.mp3')) continue;
+    if (files.some(e => e.file.name === f.name && e.file.size === f.size)) continue;
+    files.push({ file: f });
+  }
+  renderFileList();
+  updateGenerateBtn();
+}
+
+function renderFileList() {
+  fileList.innerHTML = '';
+  files.forEach((entry, i) => {
+    const li = document.createElement('li');
+    const sizeMB = (entry.file.size / 1024 / 1024).toFixed(2);
+    li.innerHTML = `
+      <div class="move-btns">
+        <button class="btn-move" data-dir="-1" data-idx="${i}" aria-label="Move up" ${i === 0 ? 'disabled' : ''}>▲</button>
+        <button class="btn-move" data-dir="1"  data-idx="${i}" aria-label="Move down" ${i === files.length - 1 ? 'disabled' : ''}>▼</button>
+      </div>
+      <span class="track-num">CP${String(i+1).padStart(2,'0')}</span>
+      <span class="track-name" title="${entry.file.name}">${entry.file.name}</span>
+      <span class="track-size">${sizeMB} MB</span>
+      <button class="btn-remove" data-idx="${i}" aria-label="Remove ${entry.file.name}">✕</button>
+    `;
+    fileList.appendChild(li);
+  });
+
+  fileList.querySelectorAll('.btn-remove').forEach(btn => {
+    btn.addEventListener('click', () => {
+      files.splice(parseInt(btn.dataset.idx), 1);
+      renderFileList();
+      updateGenerateBtn();
+    });
+  });
+
+  fileList.querySelectorAll('.btn-move').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx);
+      const dir = parseInt(btn.dataset.dir);
+      const tmp = files[idx];
+      files[idx] = files[idx + dir];
+      files[idx + dir] = tmp;
+      renderFileList();
+    });
+  });
+}
+
+function updateGenerateBtn() {
+  const idOk = /^\d{4}$/.test(figureIdEl.value.trim()) &&
+               parseInt(figureIdEl.value.trim(), 10) >= 2000 &&
+               parseInt(figureIdEl.value.trim(), 10) <= 8999;
+  btnGenerate.disabled = files.length === 0 || !idOk;
+}
+
+// Drop zone
+dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') fileInput.click(); });
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+dropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropzone.classList.remove('dragover');
+  addFiles(Array.from(e.dataTransfer.files));
+});
+fileInput.addEventListener('change', () => addFiles(Array.from(fileInput.files)));
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Generate
+// ─────────────────────────────────────────────────────────────────────────────
+function log(msg, cls = 'info') {
+  statusEl.classList.add('visible');
+  const line = document.createElement('div');
+  line.className = cls;
+  line.textContent = msg;
+  statusEl.appendChild(line);
+}
+
+function clearLog() {
+  statusEl.innerHTML = '';
+  statusEl.classList.remove('visible');
+}
+
+btnGenerate.addEventListener('click', async () => {
+  if (!window.fflate) {
+    log('⚠ Zip library not loaded. Check your internet connection and refresh.', 'err');
+    return;
+  }
+
+  if (!validateId()) return;
+
+  const figId = figureIdEl.value.trim().padStart(4, '0');
+  const folderName = `K${figId}`;
+
+  clearLog();
+  instrEl.classList.remove('visible');
+  btnGenerate.disabled = true;
+  log('Starting…');
+
+  const zipFiles = {};
+
+  try {
+    for (let i = 0; i < files.length; i++) {
+      const { file } = files[i];
+      const trackNum = i + 1;
+      const trackName = `CP${String(trackNum).padStart(2,'0')}`;
+
+      log(`Processing track ${trackNum}/${files.length}: ${file.name}`);
+
+      const arrayBuffer = await file.arrayBuffer();
+      const mp3Bytes = new Uint8Array(arrayBuffer);
+
+      const encoded = prepareTrack(mp3Bytes, figId, trackNum);
+
+      // Path inside zip: KXXXX/CPYY  (no extension, matching original tool)
+      zipFiles[`${folderName}/${trackName}`] = encoded;
+
+      log(`  ✓ ${trackName} ready (${(encoded.length / 1024).toFixed(0)} KB)`, 'ok');
+    }
+
+    log('Building zip…');
+
+    // fflate.zipSync — synchronous, works fine for a few MP3s
+    const zipped = fflate.zipSync(zipFiles, { level: 0 }); // level 0 = store only, fastest
+
+    // Trigger download
+    const blob = new Blob([zipped], { type: 'application/zip' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${folderName}.zip`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+
+    log(`✓ Done! ${folderName}.zip downloaded.`, 'ok');
+
+    // Show instructions with the right folder name / NFC code
+    document.querySelectorAll('#instr-folder, #instr-folder2').forEach(el => el.textContent = folderName);
+    document.getElementById('instr-nfc').textContent = `02190530${figId}00`;
+    instrEl.classList.add('visible');
+
+  } catch (err) {
+    log(`✗ Error: ${err.message}`, 'err');
+    console.error(err);
+  }
+
+  btnGenerate.disabled = false;
+  updateGenerateBtn();
+});
+</script>
+</body>
+</html>
