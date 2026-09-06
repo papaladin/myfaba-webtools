@@ -500,26 +500,19 @@
   <div class="dot" id="dot-4"></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
-     STEP 0 — Welcome / What you need
-════════════════════════════════════════════════ -->
+<!-- STEP 0 — Welcome -->
 <div class="card">
   <div class="step active" id="step-0">
-
     <div class="welcome-icon">🎙️</div>
     <h1 data-i18n="welcome_title">Créez vos propres histoires pour Faba</h1>
     <p class="subtitle" data-i18n="welcome_sub">Cet outil convertit vos fichiers audio au format Faba Box — sans installation, sans compte, sans envoi de données.</p>
 
     <div class="checklist">
       <div class="checklist-title" data-i18n="need_title">CE DONT VOUS AUREZ BESOIN</div>
-
       <div class="check-item">
         <div class="check-icon"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div>
-          <span data-i18n="need_computer">Un ordinateur (Mac, Windows ou Linux)</span>
-        </div>
+        <div><span data-i18n="need_computer">Un ordinateur (Mac, Windows ou Linux)</span></div>
       </div>
-
       <div class="check-item">
         <div class="check-icon"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div>
@@ -527,14 +520,10 @@
           <small data-i18n="need_faba_note">Pas compatible avec Faba+</small>
         </div>
       </div>
-
       <div class="check-item">
         <div class="check-icon"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div>
-          <span data-i18n="need_cable">Un câble USB-C pour connecter la Faba à votre ordinateur</span>
-        </div>
+        <div><span data-i18n="need_cable">Un câble USB-C pour connecter la Faba à votre ordinateur</span></div>
       </div>
-
       <div class="check-item">
         <div class="check-icon"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div>
@@ -542,7 +531,6 @@
           <small data-i18n="need_nfc_note">Moins de 1 €/puce sur Amazon ou AliExpress · App gratuite "NFC Tools" sur votre téléphone</small>
         </div>
       </div>
-
       <div class="check-item">
         <div class="check-icon"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div>
@@ -557,19 +545,14 @@
     </div>
 
     <button class="btn-primary" id="btn-start">
-      <span data-i18n="btn_start">C'est parti</span> <span>→</span>
+      <span data-i18n="btn_start">C'est parti →</span>
     </button>
-
   </div>
-</div><!-- /card step 0 -->
+</div>
 
-
-<!-- ═══════════════════════════════════════════════
-     STEP 1 — Figure ID
-════════════════════════════════════════════════ -->
+<!-- STEP 1 — Figure ID -->
 <div class="card" id="card-1" style="display:none">
   <div class="step" id="step-1">
-
     <div class="step-label" data-i18n="step1_label">Étape 1 sur 3</div>
     <h2 data-i18n="step1_title">Choisissez un numéro de figurine</h2>
     <p class="step-hint" data-i18n="step1_hint">Ce numéro identifie votre histoire sur la Faba Box. Nous en avons choisi un pour vous — vous pouvez le garder ou en choisir un autre.</p>
@@ -589,17 +572,12 @@
       <button class="btn-secondary" id="btn-back-1" data-i18n="btn_back">← Retour</button>
       <button class="btn-primary" id="btn-next-1" data-i18n="btn_next">Suivant →</button>
     </div>
-
   </div>
-</div><!-- /card step 1 -->
+</div>
 
-
-<!-- ═══════════════════════════════════════════════
-     STEP 2 — Add audio files
-════════════════════════════════════════════════ -->
+<!-- STEP 2 — Add audio files -->
 <div class="card" id="card-2" style="display:none">
   <div class="step" id="step-2">
-
     <div class="step-label" data-i18n="step2_label">Étape 2 sur 3</div>
     <h2 data-i18n="step2_title">Ajoutez vos fichiers audio</h2>
     <p class="step-hint" data-i18n="step2_hint">Vous pouvez ajouter plusieurs fichiers — ils deviendront les pistes de votre histoire, dans l'ordre que vous définissez.</p>
@@ -625,14 +603,10 @@
     </div>
 
     <div id="status" role="log" aria-live="polite"></div>
-
   </div>
-</div><!-- /card step 2 -->
+</div>
 
-
-<!-- ═══════════════════════════════════════════════
-     STEP 3 — Processing
-════════════════════════════════════════════════ -->
+<!-- STEP 3 — Processing -->
 <div class="card" id="card-3" style="display:none">
   <div class="step" id="step-3">
     <div style="text-align:center; padding: 1.5rem 0;">
@@ -642,15 +616,11 @@
       <div id="status-inline" style="margin-top:1.25rem; font-size:0.85rem; color:var(--text-2);"></div>
     </div>
   </div>
-</div><!-- /card step 3 -->
+</div>
 
-
-<!-- ═══════════════════════════════════════════════
-     STEP 4 — Success + Instructions
-════════════════════════════════════════════════ -->
+<!-- STEP 4 — Success + Instructions -->
 <div class="card" id="card-4" style="display:none">
   <div class="step" id="step-4">
-
     <div class="success-icon">
       <svg viewBox="0 0 36 36" fill="none"><path d="M7 18l8 8L29 10" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
@@ -691,7 +661,7 @@
         <div class="instr-num">5</div>
         <div>
           <strong data-i18n="instr5_title">Programmez votre puce NFC</strong>
-          <p data-i18n="instr5_body">Ouvrez <strong>NFC Tools</strong> sur votre téléphone. Appyuez sur <em>Écrire → Ajouter un enregistrement → Texte</em> et entrez exactement :<br>
+          <p data-i18n="instr5_body">Ouvrez <strong>NFC Tools</strong> sur votre téléphone. Appuyez sur <em>Écrire → Ajouter un enregistrement → Texte</em> et entrez exactement :<br>
           <span class="code-pill" id="instr-nfc">02190530????00</span><br>
           Appuyez sur Écrire, puis approchez votre puce NTAG213 de votre téléphone.</p>
         </div>
@@ -708,9 +678,8 @@
     <button class="btn-primary" id="btn-restart" style="margin-top:0.5rem">
       <span data-i18n="btn_restart">Créer une autre histoire</span>
     </button>
-
   </div>
-</div><!-- /card step 4 -->
+</div>
 
 <footer>
   <span data-i18n="footer_credit">Basé sur <a href="https://github.com/wansors/myfaba-hacks" target="_blank" rel="noopener">myfaba-hacks</a> · Non affilié à MyFaba ·</span>
@@ -718,9 +687,6 @@
 </footer>
 
 <script>
-// ═══════════════════════════════════════════════════════════════════════
-// i18n strings
-// ═══════════════════════════════════════════════════════════════════════
 const I18N = {
   fr: {
     cdn_error: "La bibliothèque ZIP n'a pas pu être chargée. Vérifiez votre connexion et rechargez la page.",
@@ -767,7 +733,7 @@ const I18N = {
     instr4_title: "Éjectez et débranchez",
     instr4_body: "Éjectez proprement le lecteur avant de débrancher le câble.",
     instr5_title: "Programmez votre puce NFC",
-    instr5_pre: "Ouvrez NFC Tools sur votre téléphone. Apuyez sur Écrire → Ajouter un enregistrement → Texte et entrez exactement :",
+    instr5_pre: "Ouvrez NFC Tools sur votre téléphone. Appuyez sur Écrire → Ajouter un enregistrement → Texte et entrez exactement :",
     instr5_post: "Appuyez sur Écrire, puis approchez votre puce NTAG213 de votre téléphone.",
     instr6_title: "Posez la puce sur la Faba Box",
     instr6_body: "Allumez votre Faba Box et posez la puce NFC dessus. Votre histoire devrait démarrer !",
@@ -964,9 +930,7 @@ const I18N = {
   }
 };
 
-// ═══════════════════════════════════════════════════════════════════════
-// Language handling
-// ═══════════════════════════════════════════════════════════════════════
+// Language
 let currentLang = 'fr';
 
 function detectLang() {
@@ -978,9 +942,8 @@ function detectLang() {
 function applyLang(lang) {
   currentLang = lang;
   const t = I18N[lang];
-  // Update all data-i18n elements.
-  // instr1_body and instr3_body contain dynamic <span> elements; replacing
-  // textContent would destroy those elements before updateInstructions() runs.
+  // instr1_body and instr3_body contain dynamic <span> elements;
+  // replacing textContent would destroy them before updateInstructions() runs.
   const dynamicInstructionKeys = new Set(['instr1_body', 'instr3_body']);
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
@@ -988,12 +951,10 @@ function applyLang(lang) {
       el.textContent = t[key];
     }
   });
-  // Update lang buttons
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.lang === lang);
   });
   document.documentElement.lang = lang;
-  // Update dynamic instruction text
   updateInstructions();
 }
 
@@ -1001,11 +962,7 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
   btn.addEventListener('click', () => applyLang(btn.dataset.lang));
 });
 
-// ═══════════════════════════════════════════════════════════════════════
-// Wizard navigation
-// ═══════════════════════════════════════════════════════════════════════
-const cards = ['card-0', 'card-1', 'card-2', 'card-3', 'card-4'];
-// card-0 is the first card (no id, just .card with step-0)
+// Wizard
 const allCards = [
   document.querySelector('.card'),
   document.getElementById('card-1'),
@@ -1022,7 +979,6 @@ function goToStep(n) {
     const step = c.querySelector('.step');
     if (step) step.classList.toggle('active', i === n);
   });
-  // Update progress dots
   document.querySelectorAll('.dot').forEach((dot, i) => {
     dot.classList.remove('active', 'done');
     if (i < n) dot.classList.add('done');
@@ -1034,9 +990,7 @@ function goToStep(n) {
 
 document.getElementById('btn-start').addEventListener('click', () => goToStep(1));
 document.getElementById('btn-back-1').addEventListener('click', () => goToStep(0));
-document.getElementById('btn-next-1').addEventListener('click', () => {
-  if (validateId()) goToStep(2);
-});
+document.getElementById('btn-next-1').addEventListener('click', () => { if (validateId()) goToStep(2); });
 document.getElementById('btn-back-2').addEventListener('click', () => goToStep(1));
 document.getElementById('btn-restart').addEventListener('click', () => {
   files = [];
@@ -1048,9 +1002,7 @@ document.getElementById('btn-restart').addEventListener('click', () => {
   goToStep(0);
 });
 
-// ═══════════════════════════════════════════════════════════════════════
 // Figure ID
-// ═══════════════════════════════════════════════════════════════════════
 const figureIdEl  = document.getElementById('figureId');
 const idNote      = document.getElementById('id-note');
 const idDisplayEl = document.getElementById('id-display-val');
@@ -1058,7 +1010,6 @@ const idDisplayEl = document.getElementById('id-display-val');
 function randomSafeId() {
   return String(Math.floor(Math.random() * 7000) + 2000);
 }
-
 function updateIdDisplay() {
   idDisplayEl.textContent = figureIdEl.value || '????';
 }
@@ -1071,7 +1022,6 @@ document.getElementById('btn-random').addEventListener('click', () => {
   updateIdDisplay();
   validateId();
 });
-
 figureIdEl.addEventListener('input', () => { updateIdDisplay(); validateId(); });
 
 function validateId() {
@@ -1090,15 +1040,12 @@ function validateId() {
   return valid;
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// File handling
-// ═══════════════════════════════════════════════════════════════════════
+// Files
 let files = [];
 const ACCEPTED = ['mp3','wav','ogg','m4a','aac'];
-
-const dropzone   = document.getElementById('dropzone');
-const fileInput  = document.getElementById('file-input');
-const fileList   = document.getElementById('file-list');
+const dropzone    = document.getElementById('dropzone');
+const fileInput   = document.getElementById('file-input');
+const fileList    = document.getElementById('file-list');
 const convertWarn = document.getElementById('convert-warn');
 
 function fileExt(name) { return name.split('.').pop().toLowerCase(); }
@@ -1166,9 +1113,7 @@ dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover
 dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.classList.remove('dragover'); addFiles(Array.from(e.dataTransfer.files)); });
 fileInput.addEventListener('change', () => addFiles(Array.from(fileInput.files)));
 
-// ═══════════════════════════════════════════════════════════════════════
-// CIPHER — port of MKICipher.java
-// ═══════════════════════════════════════════════════════════════════════
+// Cipher
 const BYTE_HIGH_NIBBLE = [
   [0x30,0x30,0x20,0x20,0x10,0x10,0x00,0x00,0x70,0x70,0x60,0x60,0x50,0x50,0x40,0x40,0xB0,0xB0,0xA0,0xA0,0x90,0x90,0x80,0x80,0xF0,0xF0,0xE0,0xE0,0xD0,0xD0,0xC0,0xC0],
   [0x00,0x00,0x10,0x10,0x20,0x20,0x30,0x30,0x40,0x40,0x50,0x50,0x60,0x60,0x70,0x70,0x80,0x80,0x90,0x90,0xA0,0xA0,0xB0,0xB0,0xC0,0xC0,0xD0,0xD0,0xE0,0xE0,0xF0,0xF0],
@@ -1202,9 +1147,7 @@ function cipherBytes(input) {
   return output;
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// ID3v2.3 writer
-// ═══════════════════════════════════════════════════════════════════════
+// ID3v2.3 — UTF-16 LE with BOM, matching real Faba files
 function makeID3Frame(id, content) {
   const frame = new Uint8Array(10 + content.length);
   new TextEncoder().encode(id).forEach((b, i) => frame[i] = b);
@@ -1213,16 +1156,29 @@ function makeID3Frame(id, content) {
   frame.set(content, 10);
   return frame;
 }
+
 function textFrame(str) {
-  const enc = new TextEncoder().encode(str);
-  const f = new Uint8Array(1 + enc.length); f[0]=0; f.set(enc,1); return f;
+  // UTF-16 LE with BOM — matches encoding used in real Faba files
+  const bom = [0xFF, 0xFE];
+  const chars = [];
+  for (let i = 0; i < str.length; i++) {
+    const c = str.charCodeAt(i);
+    chars.push(c & 0xFF, (c >> 8) & 0xFF);
+  }
+  const f = new Uint8Array(1 + 2 + chars.length);
+  f[0] = 0x01; // UTF-16 encoding byte
+  f[1] = 0xFF; f[2] = 0xFE; // BOM
+  chars.forEach((b, i) => f[3 + i] = b);
+  return f;
 }
+
 function commentFrame(str) {
   const enc = new TextEncoder().encode(str);
   const f = new Uint8Array(5 + enc.length);
   f[0]=0; f[1]=0x65; f[2]=0x6E; f[3]=0x67; f[4]=0;
   f.set(enc, 5); return f;
 }
+
 function buildID3(title) {
   const frames = [
     makeID3Frame('TIT2', textFrame(title)),
@@ -1241,6 +1197,7 @@ function buildID3(title) {
   frames.forEach(f => { tag.set(f, off); off+=f.length; });
   return tag;
 }
+
 function stripID3(bytes) {
   if (bytes[0]===0x49 && bytes[1]===0x44 && bytes[2]===0x33) {
     const size = ((bytes[6]&0x7F)<<21)|((bytes[7]&0x7F)<<14)|((bytes[8]&0x7F)<<7)|(bytes[9]&0x7F);
@@ -1249,13 +1206,10 @@ function stripID3(bytes) {
   return bytes;
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// Non-MP3 → MP3 conversion via Web Audio API + lamejs
-// ═══════════════════════════════════════════════════════════════════════
+// Non-MP3 conversion
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 async function convertToMp3(arrayBuffer) {
-  // Decode audio to PCM
   const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer.slice(0));
   const numChannels = Math.min(audioBuffer.numberOfChannels, 2);
   const sampleRate  = audioBuffer.sampleRate;
@@ -1268,7 +1222,6 @@ async function convertToMp3(arrayBuffer) {
   const blockSize = 1152;
   const mp3Data = [];
 
-  // Convert float32 to int16
   function toInt16(ch) {
     const out = new Int16Array(ch.length);
     for (let i = 0; i < ch.length; i++) {
@@ -1290,7 +1243,6 @@ async function convertToMp3(arrayBuffer) {
   const mp3buf = mp3enc.flush();
   if (mp3buf.length > 0) mp3Data.push(mp3buf);
 
-  // Flatten
   const total = mp3Data.reduce((s, b) => s + b.length, 0);
   const result = new Uint8Array(total);
   let offset = 0;
@@ -1298,9 +1250,7 @@ async function convertToMp3(arrayBuffer) {
   return result;
 }
 
-// ═══════════════════════════════════════════════════════════════════════
 // Track preparation
-// ═══════════════════════════════════════════════════════════════════════
 async function prepareTrack(mp3Bytes, figId, trackNum) {
   const trackStr = String(trackNum).padStart(2,'0');
   const title = `K${figId}CP${trackStr}`;
@@ -1311,27 +1261,14 @@ async function prepareTrack(mp3Bytes, figId, trackNum) {
   return cipherBytes(withTag);
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// Log helpers
-// ═══════════════════════════════════════════════════════════════════════
+// Log
 const statusInline = document.getElementById('status-inline');
+function logInline(msg) { statusInline.textContent = msg; }
+function clearLog() { statusInline.textContent = ''; }
 
-function logInline(msg) {
-  statusInline.textContent = msg;
-}
-
-function clearLog() {
-  statusInline.textContent = '';
-}
-
-// ═══════════════════════════════════════════════════════════════════════
 // Generate
-// ═══════════════════════════════════════════════════════════════════════
 document.getElementById('btn-next-2').addEventListener('click', async () => {
-  if (!window.fflate) {
-    alert(I18N[currentLang].cdn_error);
-    return;
-  }
+  if (!window.fflate) { alert(I18N[currentLang].cdn_error); return; }
   if (!validateId()) { goToStep(1); return; }
 
   const figId = figureIdEl.value.trim().padStart(4,'0');
@@ -1364,7 +1301,9 @@ document.getElementById('btn-next-2').addEventListener('click', async () => {
 
       logInline(`${t.log_track} ${trackNum}/${files.length} — ${t.log_encoding}`);
       const encoded = await prepareTrack(mp3Bytes, figId, trackNum);
-      zipFiles[`${folderName}/${trackName}`] = encoded;
+
+      // FIX 1: Real Faba files use .MKI extension — the box ignores files without it
+      zipFiles[`${folderName}/${trackName}.MKI`] = encoded;
     }
 
     logInline(t.log_zipping);
@@ -1382,7 +1321,6 @@ document.getElementById('btn-next-2').addEventListener('click', async () => {
   } catch(err) {
     logInline(`${t.log_error} ${err.message}`);
     console.error(err);
-    // Go back to file step with error visible
     goToStep(2);
     const statusEl = document.getElementById('status');
     statusEl.classList.add('visible');
@@ -1390,31 +1328,28 @@ document.getElementById('btn-next-2').addEventListener('click', async () => {
   }
 });
 
-// ═══════════════════════════════════════════════════════════════════════
-// Update success instructions
-// ═══════════════════════════════════════════════════════════════════════
+// Instructions
 function updateInstructions(figId) {
   const fId = figId || (figureIdEl.value.trim().padStart(4,'0'));
   const folder = `K${fId}`;
   const nfc = `02190530${fId}00`;
   const t = I18N[currentLang];
 
-  const instrFolder = document.getElementById('instr-folder');
+  const instrFolder  = document.getElementById('instr-folder');
   const instrFolder2 = document.getElementById('instr-folder2');
-  const instrNfc = document.getElementById('instr-nfc');
+  const instrNfc     = document.getElementById('instr-nfc');
 
-  if (instrFolder) instrFolder.textContent = folder;
+  if (instrFolder)  instrFolder.textContent  = folder;
   if (instrFolder2) instrFolder2.textContent = folder;
-  if (instrNfc) instrNfc.textContent = nfc;
+  if (instrNfc)     instrNfc.textContent     = nfc;
 
-  // Rebuild instruction bodies with translated text + code pills
   const i1body = document.querySelector('[data-i18n="instr1_body"]');
   if (i1body) i1body.innerHTML = `${t.instr1_body} <span class="code-pill">${folder}</span>.`;
 
   const i3body = document.querySelector('[data-i18n="instr3_body"]');
   if (i3body) i3body.innerHTML = `${t.instr3_body} <span class="code-pill">${folder}</span> ${t.instr3_body2 || ''}`;
 
-  const i5pre = document.querySelector('[data-i18n="instr5_pre"]');
+  const i5pre  = document.querySelector('[data-i18n="instr5_pre"]');
   const i5post = document.querySelector('[data-i18n="instr5_post"]');
   if (i5pre && i5post) {
     const parent = i5pre.parentElement;
@@ -1423,9 +1358,7 @@ function updateInstructions(figId) {
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════
 // Init
-// ═══════════════════════════════════════════════════════════════════════
 applyLang(detectLang());
 goToStep(0);
 </script>
